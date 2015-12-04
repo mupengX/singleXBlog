@@ -1,7 +1,7 @@
 title: Go语言的接口
 date: 2015-12-02 16:28:12
 categories: Go
-tags: Go
+tags: interface
 ---
 在计算机的世界里，同一类工具不同的实现所体现出背后的哲理也是不一样的，例如 Linux 与 windows，都是操作系统，但是如果用使用windows的习惯去操作Linux是玩不转的。编程语言也一样，对于面向对象不同的语言也同过不同的方式来实现。java不支持类的多重继承，但是可以通过接口的多重继承来弥补。Python干脆在语言层面上就不提供接口这样的特性，所以要想实现接口的效果可以采用继承只有方法空实现的父类并重写父类方法来达到目的。而Go语言提供了更加灵活和抽象的接口特性。
 
@@ -41,7 +41,8 @@ func DriveCar(d Driver) {
 	d.Drive()
 }
 //OutPut:
-cannot use p (type Person) as type Driver in argument to DriveCar: Person does not implement Driver (Drive method has pointer receiver)
+cannot use p (type Person) as type Driver in argument to DriveCar:
+Person does not implement Driver (Drive method has pointer receiver)
 ```
 诶？为什么编译器不考虑值是实现该接口的类型？这就涉及到Go语言规范里的一些规则：
 
