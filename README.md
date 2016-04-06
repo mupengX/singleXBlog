@@ -1,2 +1,2 @@
-# singleXBlog
-singleXBlog support by Hexo.
+# singleCool
+SingleCool support by Hexo.
