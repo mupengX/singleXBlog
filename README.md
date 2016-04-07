@@ -1,2 +1,2 @@
-# singleCool
+# SingleCool
 SingleCool support by Hexo.
