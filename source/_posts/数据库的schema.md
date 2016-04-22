@@ -13,7 +13,7 @@ schema可以包含多种命名对象，例如：数据类型、函数等。不�
 3. 第三方应用放在单独的schema，不与其他对象发生冲突
 
 下面以PostgresSQL为例说一下schema的使用
-###创建schema
+### 创建schema
 ```sql
 CREATE SCHEMA schema_name [ AUTHORIZATION user_name ] [ schema_element [ ... ] ]
 
@@ -28,7 +28,7 @@ CREATE SCHEMA schema_name [ AUTHORIZATION user_name ] [ schema_element [ ... ] ]
 
 每个新建数据库包含一个默认的public模式，数据库中没有指定的schema对象都归属于public schema
 
-###查询schema
+### 查询schema
 ```sql
 postgres-# \dn
   List of schemas
@@ -39,12 +39,12 @@ postgres-# \dn
 
 ```
 
-###删除schema
+### 删除schema
 如果schema已经为空对象，可以用一下语句删除schema
 ```sql
 DROP SCHEMA myschema;
 ```
-###schema搜索路径
+### schema搜索路径
 全限定的名字写起来十分冗长，系统通过一个搜索路径来决定到底使用的是哪一张表，搜索路径是schema的一个列表。搜索路径中第一个匹配的表即是要访问的表。如果搜索路径中没有匹配，会报告一个错误，即使在数据库的其他schema中有相匹配的表。
 
 查看当前额搜索路径：
@@ -66,6 +66,6 @@ SET search_path TO myschema,public;
 
 默认情况下，用户不能访问不属于他的schema中的任何对象。要允许访问，schema的拥有者必须授予用户在这个schema上的USAGE权限。不同访问权限需要不同的授权。
 
-###System Catalog Schema
+### System Catalog Schema
 *  如果不创建任何schema，则所有用户隐式的使用public schema。这等同于不使用schema。这在数据库中只有一个或者极少的用户时推荐使用。
 *  可以为每一个用户创建一个与其用户名相同的schema。如果每个用户有一个与其名字相同的单独的schema，则默认他们只能访问自己所属的schema。使用这种schema范式，可以撤销掉对public schema的访问许可，甚至把public schema直接移除，这样每个用户就真正的限定在了他们自己的schema里
