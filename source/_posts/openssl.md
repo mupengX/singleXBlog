@@ -93,7 +93,7 @@ openssl x509 -in rsaprivatekey.cert  -noout -pubkey > pubkey.pem
 openssl pkcs8 -topk8 -inform PEM -outform DER -in ca.key.pem -out ca.private.der -nocrypt
 ```
 
-#举个栗子
+# 举个栗子
 ---------
 
 产生1024位RSA私匙，用3DES加密它，口令为123456。输出到文件rsaprivatekey_pass.pem：
@@ -121,7 +121,7 @@ openssl rsautl -verify -in test.sig -out test.vfy -inkey rsaprivatekey.cert -cer
 
 ```
 
-#最后
+# 最后
 ------
 这里只是简单介绍了openssl的一些用法，其他内容推荐查看官方文档。
 
