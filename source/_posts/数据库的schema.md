@@ -2,6 +2,7 @@ title: 数据库的schema
 date: 2015-08-16 15:35:19
 categories: Database
 tags: PostgreSQL
+
 ---
 schema是对数据库逻辑的分割，schema隶属于数据库。一个数据库可以包含多个schema。
 
