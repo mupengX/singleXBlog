@@ -12,7 +12,7 @@ timezone:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://mupengx.github.io
+url: http://singlecool.com
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
@@ -71,3 +71,10 @@ deploy:
   type: git
   repository: https://github.com/mupengX/mupengX.github.io.git
   branch: master
+  
+# Extensions
+Plugins: 
+- hexo-generator-sitemap
+# # 自动生成sitemap
+sitemap:
+path: sitemap.xml
