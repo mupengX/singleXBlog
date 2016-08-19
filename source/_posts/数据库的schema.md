@@ -1,5 +1,6 @@
 title: 数据库的schema
 date: 2015-08-16 15:35:19
+description: 数据库的schema
 categories: Database
 tags: PostgreSQL
 

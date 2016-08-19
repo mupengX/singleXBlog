@@ -5,7 +5,7 @@
 # Site
 title: SingleX
 subtitle: 让未来到来，让过去过去。
-description:
+description: 享受编程和技术所带来的快乐 – http://singlecool.com
 author: SingleX
 language:
 timezone:
@@ -75,6 +75,9 @@ deploy:
 # Extensions
 Plugins: 
 - hexo-generator-sitemap
+- hexo-generator-baidu-sitemap
 # # 自动生成sitemap
 sitemap:
 path: sitemap.xml
+baidusitemap:
+  path: baidusitemap.xml 

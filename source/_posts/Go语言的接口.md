@@ -1,5 +1,6 @@
 title: Go语言的接口
 date: 2015-12-02 16:28:12
+description: Go语言的接口
 categories: Go
 tags: interface
 
