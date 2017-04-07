@@ -19,20 +19,31 @@
         <div class="clearfix"></div>
       </div>
       <% } %>
-    <% } %>
+    <% } %> 
+
     <div class="article-entry" itemprop="articleBody">
-      <% if (post.excerpt && index){ %>
+      <% if (post.excerpt && index) { %>
         <%- post.excerpt %>
+        <% if (theme.excerpt_link) { %>
+          <p class="article-more-link">
+            <a href="<%- config.root %><%- post.path %>#more"><%= theme.excerpt_link %></a>
+          </p>
+        <% } %>
       <% } else { %>
-	<% if(post.toc !== false){ %>
-		<div id="toc" class="toc-article">
-			<strong class="toc-title"><%= __('文章目录') %></strong>
-		<%- toc(post.content) %>
-		</div>
-	<% } %>
-        <%- post.content %>
+        <% var br = post.content.indexOf('\n') %>
+        <% if(br < 0 || !index) { %>
+          <%- post.content %>
+        <% } else { %>
+          <%- post.content.substring(0, br) %>
+          <% if (theme.excerpt_link) { %>
+            <p class="article-more-link">
+              <a href="<%- config.root %><%- post.path %>#more"><%= theme.excerpt_link %></a>
+            </p>
+          <% } %>
+        <% } %>
       <% } %>
     </div>
+  
     <% if (index){ %>
     <div class="article-info article-info-index">
       <%if(post.top){%>
