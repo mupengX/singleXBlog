@@ -1,6 +1,5 @@
 title: AngularJS中ui-router如何传递参数
 date: 2016-04-09 23:36:18
-description: AngularJS中ui-router如何传递参数
 categories: 前端
 tags: AngularJS
 

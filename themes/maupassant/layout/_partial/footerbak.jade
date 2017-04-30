@@ -1,0 +1,18 @@
+#footer
+if theme.busuanzi == true
+     if theme.total_visit_busuanzi == true
+           | 总点击数:
+           span#busuanzi_container_site_pv
+               span= ' '
+               span#busuanzi_value_site_pv
+               span(rel='nofollow')= ' ' + __(', 遇到了')
+        span#busuanzi_container_site_uv
+         span#busuanzi_value_site_uv
+     span(rel='nofollow')= ' ' + __(' 个人才等到你❤')
+  =  ' Copyright © ' + date(Date.now(), 'YYYY') + ' '
+  a(href=url_for('.'), rel='nofollow')= config.title + '.'
+  |  Powered by
+  a(rel='nofollow', target='_blank', href='https://hexo.io')  Hexo.
+  a(rel='nofollow', target='_blank', href='https://github.com/tufu9441/maupassant-hexo')  Theme
+  |  by
+  a(rel='nofollow', target='_blank', href='https://github.com/pagecho')  Cho.

@@ -2,7 +2,6 @@ title: 大数据与人工智能
 
 date: 2017-04-22 16:44:40
 
-description: 大数据与人工智能
 
 categories: 此刻我在想什么
 

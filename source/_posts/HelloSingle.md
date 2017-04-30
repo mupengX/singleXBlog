@@ -1,6 +1,6 @@
 title: Hello SingleX
 date: 2015-06-27 23:34:03
-description: Hello SingleX
+
 categories: archives
 tags: single
 

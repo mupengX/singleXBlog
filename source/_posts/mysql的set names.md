@@ -1,5 +1,4 @@
 title: mysql的set names
-description: mysql的set names
 date: 2016-11-13 22:10:35
 categories: Database
 tags:
