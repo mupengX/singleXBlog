@@ -69,9 +69,10 @@ mathjax: true
 # Deployment
 ## Docs: http://hexo.io/docs/deployment.html
 deploy:
-  type: git
+- type: git
   repository: https://github.com/mupengX/mupengX.github.io.git
-  branch: master
+- type: git
+  repository: https://git.coding.net/singlecool/singlecool.coding.me.git
   
 # Extensions
 Plugins: 
