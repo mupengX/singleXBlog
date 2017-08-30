@@ -1,10 +1,10 @@
 title: golang使用感受
-
+toc: true
 date: 2017-08-29 21:05:45
 
 categories: Go
 
-tags:
+tags: Go
 
 ---
 

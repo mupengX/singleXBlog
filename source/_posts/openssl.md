@@ -1,15 +1,16 @@
 title: OpenSSL
+toc: true
 date: 2016-06-19 01:27:30
 categories: 
 tags: opnessl
 
 ---
 
-# SSL
+### SSL
 ----------
 SSL 是一个缩写，代表的是 Secure Sockets Layer。它是支持在 Internet 上进行安全通信的标准，并且将数据密码术集成到了协议之中。数据在离开您的计算机之前就已经被加密，然后只有到达它预定的目标后才被解密。证书和密码学算法支持了这一切的运转，如果连接传输敏感信息，则应使用 SSL。
 
-# OpenSSL
+### OpenSSL
 ----------
 openssl是一个开源程序的套件、这个套件有三个部分组成：
 
@@ -22,7 +23,7 @@ openssl是一个开源程序的套件、这个套件有三个部分组成：
 
   [1]: https://www.openssl.org/docs/manmaster/apps/openssl.html
   
-# 密钥、证书请求、证书概要说明
+### 密钥、证书请求、证书概要说明
 ----------
 
 在申请证书过程中，涉及到密钥，证书请求，证书这几个概念，它们之间的联系是：
@@ -35,7 +36,7 @@ openssl是一个开源程序的套件、这个套件有三个部分组成：
 自签名证书就是自己给自己签发的证书，例如12306网站，它用的自签名证书，以为12306不是浏览器所信任的证书签发机构，所以浏览器会有提示证书有问题，将其的证书导入到电脑中，浏览器就不会报该错误。除非特别相信某个机构，否则不要在机器上随便导入证书，这种做法存在安全风险。
 
 
-# OpenSSL使用
+### OpenSSL使用
 ---------
 
 生成RSA密钥对。使用DES3加密，密钥使用密码保护，长度为1024，输出到rsaprivatekey.pem
@@ -93,7 +94,7 @@ openssl x509 -in rsaprivatekey.cert  -noout -pubkey > pubkey.pem
 openssl pkcs8 -topk8 -inform PEM -outform DER -in ca.key.pem -out ca.private.der -nocrypt
 ```
 
-# 举个栗子
+### 举个栗子
 ---------
 
 产生1024位RSA私匙，用3DES加密它，口令为123456。输出到文件rsaprivatekey_pass.pem：
@@ -121,7 +122,7 @@ openssl rsautl -verify -in test.sig -out test.vfy -inkey rsaprivatekey.cert -cer
 
 ```
 
-# 最后
+### 最后
 ------
 这里只是简单介绍了openssl的一些用法，其他内容推荐查看官方文档。
 

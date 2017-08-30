@@ -1,7 +1,7 @@
 title: golang多个pkg的单元测试覆盖率
 date: 2017-06-11 17:24:56
 categories: Go
-tags:
+tags: Go
 
 ---
 在go test命令后面添加 -cover参数开启测试覆盖率统计，其结果如下：

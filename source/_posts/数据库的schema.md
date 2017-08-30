@@ -1,4 +1,5 @@
 title: 数据库的schema
+toc: true
 date: 2015-08-16 15:35:19
 categories: Database
 tags: PostgreSQL

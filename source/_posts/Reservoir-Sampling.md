@@ -1,7 +1,8 @@
 title: 蓄水池抽样（Reservoir sampling）问题
+toc: true
 date: 2016-08-20 21:41:37
 categories:
-tags:
+tags: 
 ---
 
 ### 蓄水池抽样

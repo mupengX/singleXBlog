@@ -1,11 +1,11 @@
 title: 大数据与人工智能
-
+toc: true
 date: 2017-04-22 16:44:40
 
 
 categories: 此刻我在想什么
 
-tags:
+tags: AI
 
 ---
 前些年大数据这个词很火，最近一两年AI又火了起来，现在出门不谈点AI 都不好意思跟人Say Hi。
