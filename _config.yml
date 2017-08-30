@@ -82,4 +82,4 @@ Plugins:
 sitemap:
 path: sitemap.xml
 baidusitemap:
-  path: baidusitemap.xml 
+  path: baidu4sitemap.xml 
