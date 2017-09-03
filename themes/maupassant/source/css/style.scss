@@ -90,7 +90,7 @@ div {
         bottom: 0;
         a {
             display: inline-block;
-            padding: 3px 20px 3px;
+            padding: 8px 20px 8px;
             line-height: 30px;
             color: #444;
             font-size: 13px;
@@ -122,6 +122,7 @@ div {
             border-bottom: 1px solid #ddd;
             display: block;
             font-weight: normal;
+	    height: 5%
         }
         .comments-title {
             color: #6E7173;
