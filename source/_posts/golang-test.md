@@ -1,4 +1,4 @@
-title: golang多个pkg的单元测试覆盖率
+title: Go多个pkg的单元测试覆盖率
 date: 2017-06-11 17:24:56
 categories: Go
 tags: Go
