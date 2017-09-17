@@ -1,6 +1,6 @@
 title: go 域名解析过慢
 date: 2017-09-16 19:25:54
-categories: GO
+categories: Go
 tags: Go
 ---
 
