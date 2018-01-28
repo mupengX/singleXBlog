@@ -40,6 +40,8 @@ widgets: ## Six widgets in sidebar provided: search, category, tag, recent_posts
 links:
   - title: 我爱自然语言处理
     url: http://www.52nlp.cn/
+  - title: Go, the unwritten parts
+    url: https://rakyll.org/
   - title: 旧博客
     url: http://blog.163.com/xh_ding/
 
