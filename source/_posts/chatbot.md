@@ -6,7 +6,7 @@ date: 2017-12-16 23:40:59
 
 categories: 此刻我在想什么
 
-tags:
+tags: AI
 
 ---
 
