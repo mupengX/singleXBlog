@@ -9,11 +9,11 @@
     "hexo": "^3.2.0",
     "hexo-deployer-git": "0.2.0",
     "hexo-generator-archive": "^0.1.2",
-    "hexo-generator-baidu-sitemap": "^0.1.2",
+    "hexo-generator-baidu-sitemap": "^0.1.5",
     "hexo-generator-category": "^0.1.2",
     "hexo-generator-index": "^0.2.1",
     "hexo-generator-search": "^2.1.1",
-    "hexo-generator-sitemap": "^1.1.2",
+    "hexo-generator-sitemap": "^1.2.0",
     "hexo-generator-tag": "^0.2.0",
     "hexo-renderer-ejs": "^0.3.0",
     "hexo-renderer-jade": "^0.3.0",
@@ -21,6 +21,7 @@
     "hexo-renderer-sass": "^0.3.1",
     "hexo-renderer-stylus": "^0.3.3",
     "hexo-server": "^0.2.0",
-    "hexo-wordcount": "^3.0.2"
+    "hexo-wordcount": "^3.0.2",
+    "install": "^0.12.1"
   }
 }
