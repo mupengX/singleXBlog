@@ -37,7 +37,7 @@ list和watch相互配合，通过list获取全量数据，通过watch可以获�
 于是k8s抽象出持久卷PV和和持久卷声明PVC的概念，系统管理员可以先配置PV映射到底层的存储系统，用户只需要创建PVC来关联PV，然后在创建Pod的时候引用PVC即可。PVC并不关注底层存储的具体细节，只关注容量需求和操作权限。PV这层抽象描述的是底层存储系统能提供出来的卷的资源，PVC这层抽象描述的是用户希望为Pod申请的存储资源请求。
 
 但是总是需要系统管理员先创建好PV还是不方便，于是k8s又提供了StorageClass这层抽象，通过把PVC不直接关联到PV而是联到StorageClass，由StorageClass根据PVC的需求描述来动态创建PV并完成PVC与PV的绑定(包括动态绑定和延迟绑定)。下图引自《Kubernetes in Action》
-![The complete picture of dynamic provisioning of PersistentVolumes](\img\k8s-volume.png)
+![The complete picture of dynamic provisioning of PersistentVolumes](/img/k8s-volume.png)
 
 ### 系统扩展
 为了方便系统的扩展k8s提供了许多interface，比如CNI(Container Network Interface),CRI(Container Runtime Interface),CSI(Container Storage Interface)等。
