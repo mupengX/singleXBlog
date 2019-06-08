@@ -1,0 +1,59 @@
+title: 关于Kubernetes的思考
+toc: true
+date: 2019-06-02 20:14:39
+
+categories: Kubernetes
+tags: k8s
+
+---
+
+随着这些年的发展Kubernetes已经成为容器编排调度的事实标准，它的出现将改变软件部署交付的方式而它本身的设计理念也十分值得深思和借鉴。
+
+### 声明式API和编程范式
+当你开始尝试在k8s中部署一个pod时，它所给你带来的最直接的感受就是k8s的API是声明式而不是命令式的。如果是命令式的API，那么你就需要通过API来告诉k8s具体要执行的动作是什么，比如启动或停止容器。而声明式的API只需要我们使用声明式的配置，比如：json、yaml等，来指定我们想要的目标状态，同时k8s会获取当前资源状态，当目标状态和当前状态不一致时k8s会不断的调整资源的状态直到使其达到目标状态。这样做的好处是什么呢？
+
+首先是可以简化API，通过声明式的API只需提供合适的Spec定义即可，用户通过修改Spec来通知系统他所期望的状态是什么。如果是命令式API则需要向用户暴露几十上百个接口用以应对不同资源的不同的操作，用户使用起来也会觉得头大。另外k8s提供一些用于特殊场景的api，比如：扩缩容、修改镜像等，但其底层依然是对Spec的修改。
+
+再者是稳定，声明式和命令式分别代表着两种不同的动作触发模式：水平触发和边缘触发。举个例子：
+比如一个开关，我们进行了开、关、开三次操作，对于命令式API这意味着要发三次命令，如果网络出现了问题最后一次开的命令丢失了则这个开关会一直处于错误的状态，所以如果是边缘触发则需要配合补偿机制。如果是声明式API即使网络出了问题系统停留在错误的状态，但是当网络恢复之后系统依然可以调整到所期望的状态。设想我们在对系统做扩缩容的操作时，如果每次告诉k8s要增加或减少一个实例，一但这个代表具体操作的命令发生了丢失那么系统的状态就乱了，更好的做法是告诉k8s我们所期望的实例个数是多少，即使这期间网络发生了问题或者控制器出了问题，等到网络或者出问题的组件恢复后k8s依然可以为我们把实例调整到我们所期望的个数。
+
+第三是便于处理多写的操作，k8s API的客户端有多种，以kubectl为例它除了提供kubectl create、kubectl replace等操作外还提供了kubectl apply，kubectl apply 与 kubectl create、kubectl replace的不同之处在于前者是声明式的操作而后两者是命令式的操作。以Kubectl replace为例，它是使用新的yaml文件里的api对象来替换旧的对象而kubectl apply则是对原有的对象做patch操作。二者最大的区别是对于声明式请求一次可以处理多个写操作并且具备merge能力。Service Mesh是最近比较火的一个概念，其中一个代表型的项目叫Istio，它最主要的一个组件是Envoy。为了实现服务发现与治理的功能Istio需要为每个pod里安装一个Envoy容器，这过程中Istio通过k8s的Dynamic Admission Control功能所做的事情就是对新建的pod声明对象patch一个Envoy的容器配置，这样随后创建的pod中就注入了一个Envoy容器。
+
+在声明式API基础上所形成的Kubernetes编程范式即：使用控制器监听Kubernetes里API对象的状态变化，为不同的事件注册相应的操作函数，当其状态发生变化时执行对应的函数进行相应的操作进而完成用户业务逻辑的编写。
+
+### list-watch机制
+我们知道k8s中API对象的状态都存储在etcd当中，而所有跟etcd的交互都必须通过api server来进行。之前我们提到在声明式API的基础上控制器以及调度器等都需要监听API对象状态的变化，当API对象声明的状态发生变化后需要作出相应的动作。在这种需求下一般会引入MQ，而k8s为了降低系统本身对其他组件的依赖并没有使用任何的消息中间件也没有使用轮询的方式而是提供了一种list-watch的机制。该机制的list部分主要通过提供list接口来实现对api对象及其状态的查询，watch部分则是通过提供watch api来实现对资源变更事件的监听。watch实现的关键是http1.1中的[Chunked transfer encoding(分块传输编码)](https://zh.wikipedia.org/zh-hans/%E5%88%86%E5%9D%97%E4%BC%A0%E8%BE%93%E7%BC%96%E7%A0%81)
+
+list和watch相互配合，通过list获取全量数据，通过watch可以获取增量数据。当某个时间点watch连接中断后会发生消息丢失的问题而此时通过调用list接口则可以解决该问题保证消息的可靠性。通过watch可以在保证消息实时性的同时降低系统的开销，同时事件中的resourceVersion标签可以保证消息的顺序性，当客户端并发处理同一个资源的事件时，可以对比 resourceVersion来保证资源最终的状态和最新的事件所期望的状态保持一致。
+
+通过list-watch机制API Server相当于充当了消息总线的角色，k8s中的控制器、调度器、kubelet等其他组件只需通过该机制监听自己所关心的对象状态即可，相互之间并不知道彼此的存在。比如pod的调度，调度器通过监听发现有新的pod创建出来且尚未对其调度，调度器开始执行自己的调度逻辑为该pod选择node节点，然后调用API Server接口把要绑定的node信息写入pod对象的Node字段中即完成了调度。同时node节点上的kubelet组件通过订阅事件发现有一个pod调度到该节点上了，那么它就会通过API Server获取该pod对象的配置信息，根据pod的Spec完成部署。整个过程中kubelet并不知道scheduler的存在，通过这种机制对各组件的依赖关系进行了解耦。
+
+
+### 系统抽象
+在系统抽象方面尤其在存储方面的抽象Kubernetes做的很精彩。
+
+首先通过卷(Volume)来抽象出存储方式，卷描述的是底层的存储能力。但是底层的文件存储系统(NFS、Ceph等)一般都有相关人员来负责，如果仅仅有Volume那么k8s的使用者每次部署pod的时候需要指定存储系统的相关配置，对开发人员不友好。
+
+于是k8s抽象出持久卷PV和和持久卷声明PVC的概念，系统管理员可以先配置PV映射到底层的存储系统，用户只需要创建PVC来关联PV，然后在创建Pod的时候引用PVC即可。PVC并不关注底层存储的具体细节，只关注容量需求和操作权限。PV这层抽象描述的是底层存储系统能提供出来的卷的资源，PVC这层抽象描述的是用户希望为Pod申请的存储资源请求。
+
+但是总是需要系统管理员先创建好PV还是不方便，于是k8s又提供了StorageClass这层抽象，通过把PVC不直接关联到PV而是联到StorageClass，由StorageClass根据PVC的需求描述来动态创建PV并完成PVC与PV的绑定(包括动态绑定和延迟绑定)。下图引自《Kubernetes in Action》
+![The complete picture of dynamic provisioning of PersistentVolumes](\img\k8s-volume.png)
+
+### 系统扩展
+为了方便系统的扩展k8s提供了许多interface，比如CNI(Container Network Interface),CRI(Container Runtime Interface),CSI(Container Storage Interface)等。
+
+除此之外k8s还提供了CRD(Custom Resource Definition),CR(Custom Resuorce)和Operator机制方便用户自定义资源以及编写对应的Operator。所谓的Operator可以理解为操作用户自定义资源的controller，社区提供的kube-builder和coreos提供的operator-framework可以帮助我们生成Operator的基础代码：初始化 Kubernetes客户端，建立Watch等。Operator甚至可以将应用集群当做一种资源，通过Operator可以完成集群的部署、高可用、故障恢复等，将运维经验代码化。比如：通过[etcd-opeator](https://github.com/coreos/etcd-operator)完成etcd集群的搭建。
+
+### 面向k8s交付，甚至面向Operator交付
+随着技术的发展软件的交付方式也发生了几次迭代：
+
+- 交付源代码：最初根据客户现场的环境不同需要交付方带着源代码到客户现场进行现场编译、部署、运行
+- 交付可执行文件：后来java提出了“Build once, Run everywhere”，以及Go交叉编译出的可执行二进制文件，使得我们可以直接交付可执行文件，但对于系统底层的依赖依然解决的不彻底
+- 交付镜像：近几年Docker的盛行解决了因开发环境与运行环境的差异所带来的问题，提升了单体软件的交付效率，对于包含多个组件的复杂系统交付(比如：包含服务发现、负载均衡等组件的系统)仍然显得力不从心
+
+Kubernetes的出现解决了早些年PaaS系统想解决但没有解决好的问题，如果将来某一天客户现场的OS都是Kubernetes(听说工商银行一次招标的标书中明确写着要求Kubernetes技术栈)，对于ToB项目的交付是不是可以带着一堆镜像和yaml文件就可以完成交付，而这些yaml文件中很可能会包含用户自定义的资源和Operator。对于ToC的业务，目前大部分创业公司会选择将自己的服务跑在云上而不再是自己买服务器建IDC。目前来看没有哪一家云计算服务厂商是不支持k8s的，那么这就意味着如果你的服务是可以跑在k8s上的只需要很小的代价即可完成在不同的云厂商之间的切换。
+
+
+### 最后
+
+云原生（Cloud Native）这个词随着CNCF的崛起也变得火热起来，什么是云原生让人很难说清楚，但比较明确的是目前国内的云服务厂商开始尝试在正确合理的使用Kubernetes基础上构建新的PaaS平台，同时越来越多的公司开始借此机会来完成自身基础技术体系的转型升级，而在这当中Kubernetes也将会发挥越来越重要的作用。
