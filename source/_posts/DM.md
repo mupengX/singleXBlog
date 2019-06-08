@@ -21,7 +21,7 @@ toc: true
 
 下图是一个经典的对话系统结构图，可以看到DM的位置，在NLU(Linguistic Analysis)之后在NLG(Text Generation)之前，简单来说DM控制着人机对话的过程和走向，根据对话上下文信息来决定此刻系统对用户的输入做出的响应。
 
-![Architecture of dialog system](\img\DM.svg)
+![Architecture of dialog system](/img/DM.svg)
 
 在展开描述DM之前先简单说一下NLU(Natural Language Understanding)。NLU主要的工作是分析用户说的话并确定这句话的意图(Intent)是什么。同一个意图通常会有多种表达方式，例如：“今天天气怎么样”、“今天会下雨吗？”、“我想查询一下天气”等等，这些都是在表达同一个意图：查询天气。意图不应该关心句子的某些具体细节，例如：“告诉我去车站怎么走”与“怎么去最近的酒店”所表达的意图都是查询路线，不同的是二者的目的地不同，所以意图应该跟这句话所触发的Action相对应。而至于具体的细节，例如目的地，被当做意图的slot来填充。
 
