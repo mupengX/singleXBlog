@@ -57,3 +57,5 @@ Kubernetes的出现解决了早些年PaaS系统想解决但没有解决好的问
 ### 最后
 
 云原生（Cloud Native）这个词随着CNCF的崛起也变得火热起来，什么是云原生让人很难说清楚，但比较明确的是目前国内的云服务厂商开始尝试在正确合理的使用Kubernetes基础上构建新的PaaS平台，同时越来越多的公司开始借此机会来完成自身基础技术体系的转型升级，而在这当中Kubernetes也将会发挥越来越重要的作用。
+
+最后，how about runing kubernetes on kubernetes
