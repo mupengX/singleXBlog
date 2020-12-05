@@ -64,7 +64,8 @@ pagination_dir: page
 ## Plugins: http://hexo.io/plugins/
 ## Themes: http://hexo.io/themes/
 #theme: yilia
-theme: maupassant
+#theme: maupassant
+theme: indigo
 mathjax: true
 # Deployment
 ## Docs: http://hexo.io/docs/deployment.html

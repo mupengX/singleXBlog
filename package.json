@@ -17,6 +17,7 @@
     "hexo-generator-tag": "^0.2.0",
     "hexo-renderer-ejs": "^0.3.0",
     "hexo-renderer-jade": "^0.4.1",
+    "hexo-renderer-less": "^2.0.2",
     "hexo-renderer-marked": "^2.0.0",
     "hexo-renderer-sass": "0.4.0",
     "hexo-renderer-stylus": "^0.3.3",
