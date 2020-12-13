@@ -95,5 +95,5 @@ runtime.netpoll 的核心逻辑是： 根据入参 delay设置调用 epoll_wait 
 1. 如果新添加的定时任务when小于netpoll的休眠等待时间`sched.pollUntil`就会激活netPoll的等待。也就是在`runtime.findrunable `里的最后会使用超时阻塞的方法调用`epoll_wait`，这样既监控了epoll实例红黑树上的fd，又可兼顾最近的定时任务
 2. 在每次`runtime.schedule`调度时在`runtime.findrunable `中都会通过`checkTimers `来查找可运行的定时任务 
 
-### 参考
+## 参考
 [The Go netpoller](https://morsmachine.dk/netpoller)

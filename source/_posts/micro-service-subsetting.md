@@ -80,5 +80,5 @@ server集群扩容时相当于每一轮能满足的client数变多，round变小
 2. 如果clientID并非滚动升级那么极端情况下会挑选出一批client使得某台服务实例连接数为0
 3. 如果一次滚动升级的服务实例数较多囊括了某个client所选择的全部实例则会导致该client无连接可用
 
-#### 参考
+## 参考
 [1] https://sre.google/sre-book/load-balancing-datacenter/
