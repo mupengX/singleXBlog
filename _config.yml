@@ -73,9 +73,9 @@ deploy:
 - type: git
   repository: https://github.com/mupengX/mupengX.github.io.git
   branch: master
-- type: git
-  repository: https://git.coding.net/singlecool/singlecool.coding.me.git
-  branch: master
+    #- type: git
+    # repository: https://git.coding.net/singlecool/singlecool.coding.me.git
+    #branch: master
   
 # Extensions
 Plugins: 
@@ -86,3 +86,4 @@ sitemap:
 path: sitemap.xml
 baidusitemap:
   path: baidu4sitemap.xml 
+

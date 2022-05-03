@@ -6,6 +6,7 @@
     "version": "3.9.0"
   },
   "dependencies": {
+    "blueimp-md5": "^2.19.0",
     "hexo": "^3.8.0",
     "hexo-deployer-git": "1.0.0",
     "hexo-generator-archive": "^0.1.2",
