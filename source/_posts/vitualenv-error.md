@@ -2,7 +2,7 @@ title: python vitrualenv setuptools pip wheel failed with error code 1的问题
 
 date: 2017-12-03 23:46:10
 
-categories: 怪小兽的日常
+categories: 胖虎的日常
 
 tags:
 
