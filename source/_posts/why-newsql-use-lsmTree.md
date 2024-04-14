@@ -2,7 +2,7 @@ title: LSM-Tree vs B-Tree：NewSQL为何偏爱LSM-Tree？
 
 date: 2024-04-14 13:50:54
 
-categories:
+categories: Database
 
 tags:
 
