@@ -1,4 +1,4 @@
-title: Go netpoller网络模型
+title: 探索Go的netpoller：netpoller网络模型与I/O多路复用技术
 
 toc: true
 
@@ -13,6 +13,7 @@ tags: Go
 使用Go进行网络编程是十分的高效和便捷的，在goroutine-per-connection这样的编程模式下开发者可以使用同步的模式来编写业务逻辑而无需关心网络的阻塞、异步等问题极大的降低了心智负担。同时Go基于 I/O multiplexing 和 goroutine scheduler 使得这个网络模型在开发模式和接口层面保持简洁的同时也具备较高的性能可以满足绝大多数的场景。
 
 ## I/O模型
+
 在网络编程的世界里存在5种IO模型：
 
 1. 阻塞 I/O (Blocking I/O)  
@@ -37,13 +38,14 @@ tags: Go
 当数据准备好之后就可以将数据从内核空间的缓存复制到用户空间的缓存，在复制数据这一步应用程序还是阻塞的。
 ![Non-blocking I/O](/img/non-blockingIO.jpg)
 
-
 ## I/O多路复用
+
 IO多路复用是指一个线程同时监听多个IO连接的事件，阻塞等待，当某个连接发生可读写IO事件时收到通知。所以复用的是线程而不是IO连接。常见的多路复用选择器有：select/poll/epoll、kqueue、iocp
 
 简单讲一下select/poll/epoll：
 
 ### select&poll
+
 select主要存在以下几个缺点：
 
 - 每次调用select都需要使用copy_from_user把fd集合从用户态拷贝到内核态，当fd很多时这个开销会很大
@@ -53,12 +55,14 @@ select主要存在以下几个缺点：
 poll在本质上与select没有区别只是扩大了可传入的fd集合的大小
 
 ### epoll
+
 相比于select，用户可以通过epoll_ctl调用将fd注册到epoll实例上，而epoll_wait则会阻塞监听所有的epoll实例上所有的fd的事件。他解决了select未解决的两个问题：
 
 1. 通过epoll_ctl注册fd，一个fd只完成一次从用户态到内核态的拷贝而不需要每次调用时都拷贝一次，并且epoll使用红黑树存储所有的fd因此重复注册是没用的
 2. 当某个fd注册完成后会与对应的设备建立回调关系，当设备就绪触发中断后内核通过该回调函数将该fd添加到rdllist 双向就绪链表中。epoll_wait 就是去检查 rdllist 中是否有就绪的 fd，当 rdllist 为空时就会阻塞挂起当前调用epoll_wait进程，直到 rdllist 非空时进程才被唤醒并返回。此处epoll解决了select的第二个问题：不需要每次调用都遍历传进来的fd列表，从而不会因为随着fd数量的增多而性能下降。
 
 ## netpoller
+
 首先对于epoll提供的三个调用接口Go对此都做了封装
 
 ```go
@@ -88,6 +92,7 @@ runtime.netpoll 的核心逻辑是： 根据入参 delay设置调用 epoll_wait 
 上面过程中通过Listen和Accept返回的fd都被设置为非阻塞模式，原因是如果为阻塞模式则会使对应的G阻塞在system call上，此时与G对应的M也会被阻塞从而进入内核态，一旦进入内核态之后调度的控制权就不在go runtime手中也就无法借助go scheduler进行调度。在非阻塞模式下对应goroutine是被gopark给park住放入某个wait queue中，M可以继续执行下一个G。整个过程网络 I/O 的控制权都牢牢掌握在 Go 自己的 runtime 里。
 
 ## one more thing
+
 在go1.14对timer进行了优化，其中一个优化点是将timer与netpoll结合。在go1.10之前由一个独立的timerproc通过小顶堆和futexsleep来管理定时任务，go1.10为了降低锁的竞争将其扩展为最多64个小顶堆和timerproc，但依然没有从本质上解决全局锁以及多次G、P和M间的切换导致的性能开销问题。
 
 在go1.14中把存放定时事件的四叉堆放到P中，这样既很大程度上避免了全局锁又保证了G、P和M间的一致性避免相互之前多次切换，同时取消了timerproc协程转而使用netpoll来做就近时间的休眠等待：
@@ -96,4 +101,5 @@ runtime.netpoll 的核心逻辑是： 根据入参 delay设置调用 epoll_wait 
 2. 在每次`runtime.schedule`调度时在`runtime.findrunable `中都会通过`checkTimers `来查找可运行的定时任务 
 
 ## 参考
+
 [The Go netpoller](https://morsmachine.dk/netpoller)
