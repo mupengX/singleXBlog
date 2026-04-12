@@ -66,6 +66,7 @@ pagination_dir: page
 #theme: yilia
 #theme: maupassant
 theme: indigo
+#theme: pln
 mathjax: true
 # Deployment
 ## Docs: http://hexo.io/docs/deployment.html
